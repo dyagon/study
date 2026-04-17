@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastAPI Websocket 简易聊天室案例</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/chat.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="room-app">
+      <div class="chat-container">
+        <!-- 顶部导航栏 -->
+        <div class="top-header">
+          <div class="header-left">
+            <h1 class="header-title">{{ title }}</h1>
+          </div>
+          <div class="header-right">
+            <div class="user-info" @click="showUserMenu">
+              <div class="user-info-avatar">
+                {{ currentUser.charAt(0).toUpperCase() }}
+              </div>
+              <div class="user-info-name">{{ currentUser }}</div>
+            </div>
+            <button class="logout-btn" @click="logout">
+              登出
+            </button>
+          </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="chat-main-container">
+          <!-- 左侧用户列表 -->
+          <div class="user-sidebar">
+            <div class="sidebar-header">
+              <h3>在线用户</h3>
+              <p>{{ users.length }} 人在线</p>
+            </div>
+            <div class="user-list">
+              <div 
+                v-for="username in users" 
+                :key="username" 
+                class="user-item"
+              >
+                <div class="user-avatar">
+                  {{ username.charAt(0).toUpperCase() }}
+                </div>
+                <div class="user-name">{{ username }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧聊天区域 -->
+          <div class="chat-main">
+            <div class="chat-header">
+              <div class="chat-title">聊天室</div>
+              <div class="online-indicator">
+                <div class="online-dot"></div>
+                <span>在线</span>
+              </div>
+            </div>
+
+            <div class="chat-messages" ref="messagesContainer">
+              <div 
+                v-for="(msg, index) in messages" 
+                :key="index"
+                class="message-item"
+              >
+                <div 
+                  :class="[
+                    'message-content',
+                    msg.isSystem ? 'system-message' : 'chat-message'
+                  ]"
+                >
+                  {{ msg.content }}
+                  <div v-if="msg.time" class="message-time">{{ msg.time }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <div class="input-container">
+                <input
+                  type="text"
+                  class="message-input"
+                  v-model="sendmsg"
+                  @keyup.enter="send"
+                  placeholder="输入消息..."
+                  :disabled="!socket || socket.readyState !== WebSocket.OPEN"
+                />
+                <button
+                  class="send-button"
+                  @click="send"
+                  :disabled="!sendmsg.trim() || !socket || socket.readyState !== WebSocket.OPEN"
+                >
+                  发送
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/js/chat.js"></script>
+    <script>
+      // 初始化聊天应用
+      const chatApp = createChatApp();
+      chatApp.mount("#room-app");
+    </script>
+  </body>
+</html>

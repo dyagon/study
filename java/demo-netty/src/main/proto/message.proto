@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package demo.netty.protobuf;
+
+option java_package = "demo.netty.protobuf";
+option java_outer_classname = "MessageProto";
+
+message Message {
+  int32 id = 1;
+  string content = 2;
+}
+

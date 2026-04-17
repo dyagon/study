@@ -1,0 +1,12 @@
+name: java-demo # 定义项目名称，方便容器命名
+
+include:
+  - infra/zookeeper.yml
+  - infra/redis.yml
+  - infra/postgresql.yml
+
+# 定义一个全局共享的网络，确保所有组件能互相访问
+networks:
+  default:
+    name: infra-network
+    driver: bridge

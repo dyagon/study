@@ -1,0 +1,24 @@
+# infra/redis.yml
+services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes  # 仅开启持久化，不设密码
+    volumes:
+      - ../data/redis:/data
+    networks:
+      - default
+    restart: unless-stopped
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - "5540:5540"
+    volumes:
+      - ../data/redisinsight:/data  # 持久化你的连接配置
+    networks:
+      - default

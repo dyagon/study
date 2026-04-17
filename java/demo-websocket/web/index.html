@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Netty WebSocket Echo Demo</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 20px; }
+    .row { margin: 8px 0; }
+    label { display: inline-block; width: 120px; }
+    input[type="text"] { width: 360px; }
+    textarea { width: 600px; height: 180px; }
+    #log { width: 600px; height: 240px; white-space: pre-wrap; overflow-y: auto; background: #111; color: #eee; padding: 8px; }
+    .status { font-weight: bold; }
+    button { margin-right: 8px; }
+    .muted { color: #666; }
+  </style>
+  <script>
+    let ws = null;
+
+    function log(msg) {
+      const el = document.getElementById('log');
+      const time = new Date().toLocaleTimeString();
+      el.textContent += `[${time}] ${msg}\n`;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function setStatus(text, color) {
+      const s = document.getElementById('status');
+      s.textContent = text;
+      s.style.color = color || '#000';
+    }
+
+    function connect() {
+      const url = document.getElementById('url').value.trim();
+      if (!url) { alert('Please enter WebSocket URL'); return; }
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        log('Already connected or connecting...');
+        return;
+      }
+      log(`Connecting to ${url} ...`);
+      setStatus('CONNECTING', '#a60');
+
+      ws = new WebSocket(url);
+
+      ws.onopen = () => {
+        log('Connected.');
+        setStatus('OPEN', 'green');
+      };
+
+      ws.onmessage = async (evt) => {
+        if (typeof evt.data === 'string') {
+          log(`<- echo (text): ${evt.data}`);
+        } else if (evt.data instanceof Blob) {
+          try {
+            const text = await evt.data.text();
+            log(`<- echo (binary/blob ${evt.data.size} bytes): ${text}`);
+          } catch (e) {
+            log(`<- echo (binary/blob ${evt.data.size} bytes)`);
+          }
+        } else if (evt.data instanceof ArrayBuffer) {
+          log(`<- echo (binary ${evt.data.byteLength} bytes)`);
+        } else {
+          log('<- echo (unknown data type)');
+        }
+      };
+
+      ws.onerror = (e) => {
+        log(`Error: ${e?.message || e}`);
+      };
+
+      ws.onclose = (evt) => {
+        log(`Disconnected (code=${evt.code} reason=${evt.reason || '-'}).`);
+        setStatus('CLOSED', 'red');
+      };
+    }
+
+    function sendMsg() {
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        log('Not connected.');
+        return;
+      }
+      const txt = document.getElementById('msg').value;
+      ws.send(txt);
+      log(`-> send: ${txt}`);
+    }
+
+    function disconnect() {
+      if (ws) {
+        log('Closing connection...');
+        try { ws.close(1000, 'client closing'); } catch (e) {}
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const url = document.getElementById('url');
+      // Default to local server path
+      url.value = url.value || 'ws://localhost:8080/ws';
+    });
+  </script>
+  </head>
+<body>
+  <h2>Netty WebSocket Echo Demo</h2>
+
+  <div class="row">
+    <label for="url">WebSocket URL</label>
+    <input id="url" type="text" value="ws://localhost:8080/ws" />
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <span class="status">Status: <span id="status">IDLE</span></span>
+  </div>
+
+  <div class="row">
+    <label for="msg">Message</label>
+    <input id="msg" type="text" placeholder="Type message to echo" />
+    <button onclick="sendMsg()">Send</button>
+  </div>
+
+  <div class="row">
+    <div class="muted">Console</div>
+    <div id="log"></div>
+  </div>
+
+  <div class="row muted">
+    Tip: Start the server first, then open this file in your browser and click Connect.
+  </div>
+</body>
+</html>
+

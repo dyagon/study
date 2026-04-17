@@ -1,0 +1,17 @@
+# 项目根目录
+.gradle/
+build/
+target/
+.idea/
+.vscode/
+.DS_Store
+.env
+.env.*
+!.env.example
+logs/
+*.log
+*.log.*
+hs_err_pid*
+replay_pid*
+
+netty/

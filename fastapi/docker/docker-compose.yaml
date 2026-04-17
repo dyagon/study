@@ -1,0 +1,72 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: fastapi_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fastapi_book
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./volumes/db:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d  # Optional: for initialization scripts
+      - ./init-data:/init-data
+    ports:
+      - "25432:5432"
+    networks:
+      - fastapi_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fastapi_user -d fastapi_book"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: fastapi_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass redis_password
+    volumes:
+      - ./volumes/redis:/data
+    ports:
+      - "26379:6379"
+    networks:
+      - fastapi_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis_password", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: fastapi_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - ./volumes/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "25672:5672"    # AMQP port
+      - "25673:15672"   # Management UI port
+    networks:
+      - fastapi_network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+# Custom network
+networks:
+  fastapi_network:
+    driver: bridge

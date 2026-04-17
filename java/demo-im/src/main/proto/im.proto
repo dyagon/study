@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package demo.im;
+
+option java_package = "demo.im.protocol";
+option java_outer_classname = "ImMessage";
+
+enum CommandType {
+  UNKNOWN = 0;
+  LOGIN_REQUEST = 1;
+  LOGIN_RESPONSE = 2;
+  CHAT_REQUEST = 3;
+  CHAT_RESPONSE = 4;
+  LOGOUT_REQUEST = 5;
+  CHAT_MESSAGE = 6;
+}
+
+// The top-level packet wrapper
+message Packet {
+  // Unique ID for request/response matching
+  int64 sequence_id = 1;
+  
+  // The type of command
+  CommandType command = 2;
+
+  // The actual payload
+  oneof payload {
+    LoginRequest login_request = 3;
+    LoginResponse login_response = 4;
+    ChatRequest chat_request = 5;
+    ChatResponse chat_response = 6;
+    LogoutRequest logout_request = 7;
+    ChatMessage chat_message = 8;
+  }
+}
+
+message LoginRequest {
+  string user_id = 1;
+  string password = 2; // Simple placeholder
+}
+
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ChatRequest {
+  string to_user_id = 1;
+  string content = 2;
+}
+
+message ChatResponse {
+  bool success = 1;
+  string message = 2; // e.g., "User offline"
+}
+
+message ChatMessage {
+  string from_user_id = 1;
+  string content = 2;
+}
+
+message LogoutRequest {
+  string user_id = 1;
+}

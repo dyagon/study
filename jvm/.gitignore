@@ -1,0 +1,56 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+
+# Java 编译产物
+*.class
+target/
+build/
+out/
+
+# Gradle
+.gradle/
+
+# Maven wrapper 下载的 jar（maven-wrapper.properties 通常需提交）
+.mvn/wrapper/*.jar
+
+# 日志与 JVM 崩溃转储
+*.log
+*.log.*
+hs_err_pid*
+replay_pid*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# 敏感文件
+*.keystore
+*.jks
+.env
+.env.*
+!.env.example
+
+
+# jdk
+jdk
+
+*.hprof
+*.hwcache
+*.index
+*.threads
+
+jitwatch/

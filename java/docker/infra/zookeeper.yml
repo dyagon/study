@@ -1,0 +1,65 @@
+# infra/zookeeper.yml
+services:
+  zookeeper-1:
+    image: zookeeper:3.9
+    container_name: zookeeper-1
+    hostname: zookeeper-1
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zookeeper-2:2888:3888;2181 server.3=zookeeper-3:2888:3888;2181
+    volumes:
+      - ../data/zookeeper-1:/data      # 修改为 ../data
+      - ../data/zookeeper-1/log:/datalog
+    networks:
+      - default
+    restart: unless-stopped
+
+  zookeeper-2:
+    image: zookeeper:3.9
+    container_name: zookeeper-2
+    hostname: zookeeper-2
+    ports:
+      - "2182:2181"
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zookeeper-1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zookeeper-3:2888:3888;2181
+    volumes:
+      - ../data/zookeeper-2:/data
+      - ../data/zookeeper-2/log:/datalog
+    networks:
+      - default
+    restart: unless-stopped
+
+  zookeeper-3:
+    image: zookeeper:3.9
+    container_name: zookeeper-3
+    hostname: zookeeper-3
+    ports:
+      - "2183:2181"
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zookeeper-1:2888:3888;2181 server.2=zookeeper-2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+    volumes:
+      - ../data/zookeeper-3:/data
+      - ../data/zookeeper-3/log:/datalog
+    networks:
+      - default
+    restart: unless-stopped
+
+  zoonavigator:
+    image: elkozmon/zoonavigator:latest
+    container_name: zoonavigator
+    hostname: zoonavigator
+    ports:
+      - "9001:9000"
+    environment:
+      HTTP_PORT: 9000
+    networks:
+      - default
+    restart: unless-stopped
+    depends_on:
+      - zookeeper-1
+      - zookeeper-2
+      - zookeeper-3

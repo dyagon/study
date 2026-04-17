@@ -1,0 +1,29 @@
+
+
+app:
+  secret_key: ${APP_SECRET_KEY:your-secret-key}
+
+redis:
+  url: ${REDIS_URL}
+
+db:
+  uri: ${DB_URI}
+  debug_echo: ${DB_DEBUG_ECHO:true}
+
+oauth2:
+  client_credentials:
+    base_url: http://localhost:8000/api
+    token_url: http://localhost:8000/oauth2/token
+    client_id: client-credentials-client
+    client_secret: client-credentials-secret-456
+    scope: get_client_info
+
+  authorization_code:
+    provider: local-oauth # indicate which provider to use
+    base_url: http://localhost:8000/api
+    token_url: http://localhost:8000/oauth2/token
+    auth_url: http://localhost:8000/oauth2/authorize
+    client_id: auth-code-client
+    client_secret: auth-code-secret-123
+    redirect_uri: http://localhost:8001/callback
+    scope: get_user_info get_admin_info
