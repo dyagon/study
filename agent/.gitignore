@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+
+dev/db
+
+# 多向量 QA 生成的 docstore（可重建）
+langgraph/03-qa-multivector/docstore.json
+
+.chainlit/
+
+outputs/
