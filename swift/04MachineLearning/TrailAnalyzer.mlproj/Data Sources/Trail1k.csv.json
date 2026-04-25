@@ -1,0 +1,80 @@
+{
+  "activityEntities" : [
+
+  ],
+  "createdDate" : "2026-03-30T02:35:49Z",
+  "dataPathRelativeToProjectURL" : "../../../../Downloads/TrailData/Trail1k.csv/",
+  "dataResult" : {
+    "columnTypes" : [
+      "Int",
+      "Int",
+      "String",
+      "Int",
+      "Int"
+    ],
+    "columnValues" : [
+      "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3",
+      "0, 0, 0, 0, 0, 0, 0, 300, 300, 300, 300, 0, 0, 0, 0, 0, 0, 0, 0, 300, 300, 0, 0, 0, 0, 0, 0, 0, 0, 300",
+      "paved, sandy, sandy, sandy, sandy, sandy, sandy, paved, paved, paved, sandy, paved, paved, paved, paved, sandy, sandy, sandy, sandy, paved, paved, paved, paved, paved, paved, sandy, sandy, sandy, sandy, paved",
+      "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0",
+      "1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4"
+    ],
+    "columns" : [
+      "distance",
+      "elevation",
+      "terrain",
+      "dangerous",
+      "risk"
+    ],
+    "createdDate" : "2026-03-30T02:35:49Z",
+    "dataAnalysis" : {
+      "classifierAnalysis" : {
+
+      },
+      "issues" : [
+        {
+          "description" : "No target selected",
+          "severity" : "notReady"
+        },
+        {
+          "description" : "Data has 1000 rows",
+          "severity" : "info"
+        },
+        {
+          "description" : "No features selected",
+          "severity" : "notReady"
+        }
+      ],
+      "objectDetectorAnalysis" : {
+        "details" : {
+
+        }
+      },
+      "summary" : {
+        "canUseValidation" : 1,
+        "sampleCount" : 1000
+      }
+    },
+    "dataSourceID" : "BF5DEDF7-4779-4A8D-95E7-BD9C449FEEE2",
+    "dataURL" : "file:///Users/mac-DYANG20/Downloads/TrailData/Trail1k.csv",
+    "error" : {
+      "code" : 1000,
+      "domain" : "composer.error.domain",
+      "errorType" : "notReady",
+      "reason" : "No target selected"
+    },
+    "itemsCount" : 1000
+  },
+  "dataURL" : "file:///Users/mac-DYANG20/Downloads/TrailData/Trail1k.csv",
+  "experimentIDs" : [
+    "00F680BA-A7EC-4B97-B581-DB5BD35D8175",
+    "253A02D8-556C-4972-A9DE-FC1784D72FE1",
+    "3A87A400-73E5-4D3F-BB2B-A6CD569839B3"
+  ],
+  "id" : "BF5DEDF7-4779-4A8D-95E7-BD9C449FEEE2",
+  "modifiedDate" : "2026-03-30T02:40:07Z",
+  "pathType" : 0,
+  "preferredFilename" : "Trail1k.csv",
+  "title" : "Trail1k.csv",
+  "version" : "1.0"
+}

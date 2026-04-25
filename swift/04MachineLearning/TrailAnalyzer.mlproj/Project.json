@@ -1,0 +1,29 @@
+{
+  "activityEntities" : [
+    "projectCreated",
+    [
+      {
+        "createdDate" : "2026-03-30T02:32:41Z",
+        "event" : "projectCreated",
+        "id" : "E31DDCE6-0170-416B-B92E-C98F9F2C0AC7",
+        "subtitle" : "TrailAnalyzer",
+        "title" : "Project Created"
+      }
+    ]
+  ],
+  "authorName" : "Dong YANG",
+  "createdDate" : "2026-03-30T02:32:41Z",
+  "description" : "",
+  "id" : "F6EFFEE5-2A23-4DAB-B65B-DC2990187FA7",
+  "license" : "",
+  "location" : "",
+  "modifiedDate" : "2026-03-30T02:32:41Z",
+  "projectName" : "TrailAnalyzer",
+  "settingsEntity" : {
+    "snapshotOnExtendTraining" : true,
+    "snapshotOnResumeTraining" : false
+  },
+  "taskType" : "generalRegresor",
+  "title" : "Tabular Regression",
+  "version" : "1.1"
+}
